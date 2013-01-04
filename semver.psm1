@@ -36,29 +36,33 @@ function Invoke-Semver {
     $semver_content = (Get-Content $semver_file_name)
 
     if ($Increment -eq "major") {
-        Save-Version $semver_content 0
+        Save-NewVersion $semver_content 0
     }
     elseif ($Increment -eq "minor") {
-        Save-Version $semver_content 1
+        Save-NewVersion $semver_content 1
     }
     elseif ($Increment -eq "patch") {
-        Save-Version $semver_content 2
+        Save-NewVersion $semver_content 2
     }
 
     $semver_content
 }
 
-function Save-Version($semver_content, $index) {
-    $semver_content[$index] = Get-Version $Increment $semver_content[$index]
+function Get-Version($semver_content, $index) {
+    [void]($semver_content[$index] -match "(?<number>\d+)")
+    [int]$matches['number']
+}
+
+function Save-NewVersion($semver_content, $index) {
+    $semver_content[$index] = Get-VersionLine $semver_content $index
     $semver_content | Out-File -filepath $semver_file_name
 }
 
-function Get-Version($version_part, $version_line) {
-    [void]($version_line -match "$version_part`:(\s+)?(?<number>\d+)")
-    $number = [int]$matches['number']
+function Get-VersionLine($semver_content, $index) {
+    $number = Get-Version $semver_content $index
     $number = $number + 1
-    $new_version_line = "$version_part`: $number"
-    return $new_version_line
+    $version_line = "$version_part`: $number"
+    return $version_line
 }
 
 function New-IfSemverNotExist {
