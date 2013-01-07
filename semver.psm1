@@ -1,5 +1,10 @@
 $semver_file_name = ".\.semver"
 
+$MAJOR_LINE = 1
+$MINOR_LINE = 2
+$PATCH_LINE = 3
+$SPECIAL_LINE = 4
+
 function Invoke-Semver {
     <#
     .SYNOPSIS
@@ -26,8 +31,11 @@ function Invoke-Semver {
         [ValidateSet("major", "minor", "patch")]
         [string]
         $Increment,
-        [Parameter(Position=0,Mandatory=0,HelpMessage="Options are %M, %m, %p")]
-        [ValidateSet("%M", "%m", "%p")]
+        [Parameter(Position=0,Mandatory=0,HelpMessage="Set a special version suffix")]
+        [string]
+        $Special,
+        [Parameter(Position=0,Mandatory=0,HelpMessage="Options are %M, %m, %p, %s")]
+        [ValidateSet("%M", "%m", "%p", "%s")]
         [string]
         $Format)
 
@@ -36,13 +44,20 @@ function Invoke-Semver {
     $semver_content = (Get-Content $semver_file_name)
 
     if ($Increment -eq "major") {
-        Save-NewVersion $semver_content 0
+        $version = Get-Version $semver_content $MAJOR_LINE
+        Save-NewVersion $semver_content $MAJOR_LINE "major" $version
     }
     elseif ($Increment -eq "minor") {
-        Save-NewVersion $semver_content 1
+        $version = Get-Version $semver_content $MINOR_LINE
+        Save-NewVersion $semver_content $MINOR_LINE "minor" $version
     }
     elseif ($Increment -eq "patch") {
-        Save-NewVersion $semver_content 2
+        $version = Get-Version $semver_content $PATCH_LINE
+        Save-NewVersion $semver_content $PATCH_LINE "patch" $version
+    }
+
+    if ($Special -ne $null) {
+        Save-NewVersion $semver_content $SPECIAL_LINE "special" "'$Special'"
     }
 
     $semver_content
@@ -50,19 +65,13 @@ function Invoke-Semver {
 
 function Get-Version($semver_content, $index) {
     [void]($semver_content[$index] -match "(?<number>\d+)")
-    [int]$matches['number']
+    $version = [int]$matches['number']
+    return $version + 1
 }
 
-function Save-NewVersion($semver_content, $index) {
-    $semver_content[$index] = Get-VersionLine $semver_content $index
+function Save-NewVersion($semver_content, $index, $version_part, $version) {
+    $semver_content[$index] = "$version_part`: $version"
     $semver_content | Out-File -filepath $semver_file_name
-}
-
-function Get-VersionLine($semver_content, $index) {
-    $number = Get-Version $semver_content $index
-    $number = $number + 1
-    $version_line = "$version_part`: $number"
-    return $version_line
 }
 
 function New-IfSemverNotExist {
@@ -74,9 +83,11 @@ function New-IfSemverNotExist {
 function New-SemverFile {
     $contents = 
 @"
+--------
 major: 0
 minor: 0
 patch: 0
+special: ''
 "@
 
     $contents | Out-File -filepath $semver_file_name
