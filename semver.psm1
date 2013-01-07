@@ -17,12 +17,23 @@ function Invoke-Semver {
     Invoke-Semver
     Outputs the current version information:
 
+    --------
     major: 1
     minor: 0
     patch: 0
+    special: ''
     .EXAMPLE
     Invoke-Semver -Increment major
     Increments the major version number by 1.  If the version number was previously 1.0.0, it will now be 2.0.0
+    .EXAMPLE
+    Invoke-Semver -Special alpha
+    Sets the special version suffix.
+
+    --------
+    major: 1
+    minor: 0
+    patch: 0
+    special: 'alpha'
     .LINK
     https://github.com/bahrens/poshsemver
     #>
