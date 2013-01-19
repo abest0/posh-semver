@@ -35,7 +35,7 @@ function Invoke-Semver {
     patch: 0
     special: 'alpha'
     .LINK
-    https://github.com/bahrens/poshsemver
+    https://github.com/bahrens/posh-semver
     #>
     param(
         [Parameter(Position=0,Mandatory=0,HelpMessage="Options are major, minor, patch")]
@@ -69,6 +69,10 @@ function Invoke-Semver {
 
     if ($Special -ne $null) {
         Save-NewVersion $semver_content $SPECIAL_LINE "special" "'$Special'"
+    }
+
+    if ($Format -ne $null) {
+        Get-Format $
     }
 
     $semver_content
