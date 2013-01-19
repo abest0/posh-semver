@@ -16,23 +16,23 @@ Consider a version number with the scheme X.Y.Z (Major.Minor.Patch). The rules a
 Usage
 -----
 
-The following command will create a new .semver file with major, minor, and patch set to 0. If a .semver file does exist, it will read the file and output the current version number to the terminal as a string in the format of v%M.%m.%p
+The following command will create a new `.semver` file (in the current directory) with major, minor, patch set to 0, and special to ''. If a `.semver` file does exist, it will read the file and output the current version number to the terminal as a string in the format of `v%M.%m.%p` (major, minor, patch).
 
 	Invoke-Semver
 
-To increment a version number part, use the Invoke-Semver command with -Increment switch and one of the following options: major, minor, patch
+To increment a version number part, use the `Invoke-Semver` command with `-Increment` switch and one of the following options: `major`, `minor`, `patch`
 
 	Invoke-Semver -Increment major
 
-To set the special string, use the Invoke-Semver command with -Special and the string you wish to use.
+To set the special string, use the `Invoke-Semver` command with `-Special` and the string you wish to use.
 
 	Invoke-Semver -Special alpha
 
-To format the version number, you can use the following special format characters: %M (for major), %m (for minor), %p (for patch), $s (for special)
+To format the version number, you can use the following special format characters: `%M` (for major), `%m` (for minor), `%p` (for patch), `%s` (for special)
 
 	Invoke-Semver -Format %M.%m.%p%s
 
-You can also combine -Increment, -Special, -Format in any combination with the Invoke-Semver command.
+You can also combine `-Increment`, `-Special`, `-Format` in any combination with the `Invoke-Semver` command.
 
 License
 -------
