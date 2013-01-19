@@ -5,7 +5,7 @@ Is a simple PowerShell script for managing semantic versioning.
 
 ### What is semantic versioning?
 
-Semantic version is specification written by Tom Preston-Werner. Semantic versioning is a set of rules around how to version software and to avoid "dependency hell". Here is a quick summary of the semantic versioning rules, however, I encourage you to read the full spec at [semver.org](http://semver.org).
+Semantic versioning is a specification written by Tom Preston-Werner. Semantic versioning is a set of rules on how to version software and to avoid "dependency hell". Here is a quick summary of the semantic versioning rules, however, I encourage you to read the full spec at [semver.org](http://semver.org).
 
 Consider a version number with the scheme X.Y.Z (Major.Minor.Patch). The rules are as follows:
 
@@ -30,7 +30,9 @@ To set the special string, use the Invoke-Semver command with -Special and the s
 
 To format the version number, you can use the following special format characters: %M (for major), %m (for minor), %p (for patch), $s (for special)
 
-	Invoke-Semver -Format %M.%m.%p-%s
+	Invoke-Semver -Format %M.%m.%p%s
+
+You can also combine -Increment, -Special, -Format in any combination with the Invoke-Semver command.
 
 License
 -------
