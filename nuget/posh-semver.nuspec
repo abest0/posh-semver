@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>posh-semver</id>
+    <version>1.0.0</version>
+    <authors>bahrens</authors>
+    <owners>bahrens</owners>
+    <licenseUrl>https://github.com/bahrens/posh-semver</licenseUrl>
+    <projectUrl>https://github.com/bahrens/posh-semver</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Is a simple PowerShell script for managing semantic versioning.</description>
+    <copyright>Copyright 2013</copyright>
+    <tags>powershell semver semantic versioning</tags>
+  </metadata>
+</package>
