@@ -40,7 +40,7 @@ function Invoke-Semver {
         [Parameter(Position=2,Mandatory=0,HelpMessage="Options are %M, %m, %p, %s")]
         [string]
         $Format,
-        [Parameter(Position=2,Mandatory=0,HelpMessage="The directory of the semver file")]
+        [Parameter(Position=3,Mandatory=0,HelpMessage="The directory of the semver file")]
         [ValidateScript({Test-Path $_ -PathType container})]
         [string]
         $SemverDir = ".\")
