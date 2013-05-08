@@ -1,4 +1,5 @@
-$semver_file_name = ".\.semver"
+$semver_file_name = ".semver"
+$semver_file_path = ""
 
 $MAJOR_LINE = 1
 $MINOR_LINE = 2
@@ -38,7 +39,13 @@ function Invoke-Semver {
         $Special,
         [Parameter(Position=2,Mandatory=0,HelpMessage="Options are %M, %m, %p, %s")]
         [string]
-        $Format)
+        $Format,
+        [Parameter(Position=2,Mandatory=0,HelpMessage="The directory of the semver file")]
+        [ValidateScript({Test-Path $_ -PathType container})]
+        [string]
+        $SemverDir = ".\")
+
+    Set-FilePath $SemverDir
 
     New-IfSemverNotExist
 
@@ -51,8 +58,12 @@ function Invoke-Semver {
     Get-Format $Format $semver_content
 }
 
+function Set-FilePath ($path){
+    $global:semver_file_path = Join-Path $path $semver_file_name
+}
+
 function New-IfSemverNotExist {
-    if (!(Test-Path $semver_file_name)) {
+    if (!(Test-Path $semver_file_path)) {
         New-SemverFile
     }
 }
@@ -67,11 +78,11 @@ patch: 0
 special: ''
 "@
 
-    $contents | Out-File -filepath $semver_file_name
+    $contents | Out-File -filepath $semver_file_path
 }
 
 function Get-SemverContent {
-    Get-Content $semver_file_name
+    Get-Content $semver_file_path
 }
 
 function Set-NumericVersion($increment, $semver_content) {
@@ -115,7 +126,7 @@ function Get-Format($format, $semver_content) {
 
 function Save-NewVersion($semver_content, $index, $version_part, $version) {
     $semver_content[$index] = "$version_part`: $version"
-    $semver_content | Out-File -filepath $semver_file_name
+    $semver_content | Out-File -filepath $semver_file_path
 }
 
 function Format-VersionString($format, $semver_content) {
